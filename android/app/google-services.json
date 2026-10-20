@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "139921788550",
+    "project_id": "vadamrit-36d90",
+    "storage_bucket": "vadamrit-36d90.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139921788550:android:7516b3e92678fef4754b07",
+        "android_client_info": {
+          "package_name": "com.vedamrit.vedamrit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeF6sjl4FlzECf3shmF1IkuwYPmS1DRRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
