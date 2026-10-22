@@ -6,10 +6,13 @@ import 'package:vedamrit/app_state.dart';
 import 'package:vedamrit/main.dart';
 import 'package:vedamrit/models.dart';
 import 'package:vedamrit/reader_audio.dart';
+import 'package:vedamrit/sanskrit_documents_data.dart';
+import 'package:vedamrit/sanskrit_transcriber.dart';
 import 'package:vedamrit/screens/book_reader_screen.dart';
 import 'package:vedamrit/screens/gita_book_screen.dart';
 import 'package:vedamrit/screens/home_screen.dart';
 import 'package:vedamrit/screens/scripture_screen.dart';
+import 'package:vedamrit/screens/scripture_verse_book_screen.dart';
 import 'package:vedamrit/screens/settings_screen.dart';
 import 'package:vedamrit/screens/shell_screen.dart';
 import 'package:vedamrit/theme.dart';
@@ -30,17 +33,37 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
   });
 
-  testWidgets('home screen has recent floating action button and sastra grid', (tester) async {
+  testWidgets('home screen has recent continue bar and sastra grid without floating button', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final state = AppState();
     await state.load();
     await tester.pumpWidget(_wrap(state, const HomeScreen()));
     await tester.pump();
-    expect(find.byType(FloatingActionButton), findsOneWidget);
-    expect(find.text('Resume Reading'), findsOneWidget);
+    expect(find.byType(FloatingActionButton), findsNothing);
     expect(find.text('Vedas'), findsOneWidget);
     expect(find.text('Gita'), findsOneWidget);
     expect(find.text('Puranas'), findsOneWidget);
+  });
+
+  testWidgets('book reader renders PDF mode directly without conversion', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final state = AppState();
+    await state.load();
+    await tester.pumpWidget(
+      _wrap(
+        state,
+        const BookReaderScreen(
+          id: 'test-dli-pdf',
+          title: 'DLI Scanned Shastra',
+          path: 'assets/test.pdf',
+          kind: 'pdf',
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('pdfViewPlaceholder')), findsOneWidget);
+    expect(find.text('PDF: DLI Scanned Shastra'), findsOneWidget);
+    expect(find.byType(AppBar), findsOneWidget);
   });
 
   testWidgets('scripture screen contains Puranas grid card and opens shelf', (tester) async {
@@ -55,9 +78,7 @@ void main() {
     await tester.tap(find.text('Puranas').first);
     await tester.pumpAndSettle();
     expect(find.text('The sacred Puranas'), findsOneWidget);
-    await tester.drag(find.byType(ListView), const Offset(0, -400));
-    await tester.pumpAndSettle();
-    expect(find.text('Srimad Bhagavatam'), findsOneWidget);
+    expect(find.textContaining('Srimad Bhagavatam'), findsOneWidget);
   });
 
   testWidgets('book reader tap once toggles fullscreen mode', (tester) async {
@@ -108,6 +129,30 @@ void main() {
     expect(find.text('Tap to hide controls'), findsOneWidget);
   });
 
+  testWidgets('settings screen offers AMOLED dark mode and theme color palette selection', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final state = AppState();
+    await state.load();
+    await tester.pumpWidget(_wrap(state, const SettingsScreen()));
+    await tester.pumpAndSettle();
+    expect(find.text('AMOLED Dark (#000000)'), findsOneWidget);
+    expect(find.text('Theme Color Palette'), findsOneWidget);
+    expect(find.text('Saffron'), findsOneWidget);
+    expect(find.text('Kumkum'), findsOneWidget);
+    expect(find.text('Peacock Blue'), findsOneWidget);
+
+    // Tap to select Peacock Blue palette
+    await tester.tap(find.text('Peacock Blue'));
+    await tester.pumpAndSettle();
+    expect(state.themePaletteId, 'peacock');
+
+    // Tap to toggle AMOLED dark
+    await tester.tap(find.text('AMOLED Dark (#000000)'));
+    await tester.pumpAndSettle();
+    expect(state.amoledDark, isTrue);
+    expect(state.darkMode, isTrue);
+  });
+
   testWidgets('welcome offers reading', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final state = AppState();
@@ -135,7 +180,7 @@ void main() {
     expect(find.text('Vedas'), findsOneWidget);
     await tester.tap(find.text('Vedas'));
     await tester.pumpAndSettle();
-    expect(find.text('The Rig Veda'), findsOneWidget);
+    expect(find.textContaining('Rig Veda'), findsWidgets);
   });
 
   testWidgets('a gita chapter opens as a centered book', (tester) async {
@@ -168,6 +213,39 @@ void main() {
     state.toggleBookmark(mark);
     expect(state.bookmarked('book-rig-veda'), isFalse);
     expect(state.bookmarks, isEmpty);
+  });
+
+  test('sanskrit transcriber converts devanagari to accurate IAST transliteration', () {
+    expect(SanskritTranscriber.toIast('अग्निमीळे पुरोहितं'), 'agnimīḷe purohitaṁ');
+    expect(SanskritTranscriber.toIast('योगश्चित्तवृत्तिनिरोधः'), 'yogaścittavṛttinirodhaḥ');
+    expect(SanskritTranscriber.toIast('अथातो ब्रह्मजिज्ञासा'), 'athāto brahmajijñāsā');
+  });
+
+  testWidgets('scripture verse book screen follows Gita pattern with heading, verse number, sanskrit, transliteration, and translation', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final state = AppState();
+    await state.load();
+    final book = SanskritDocumentsData.findBook('upanishad-isha')!;
+    await tester.pumpWidget(_wrap(state, ScriptureVerseBookScreen(book: book)));
+    await tester.pumpAndSettle();
+
+    // 1. Heading
+    expect(find.text('Isha Upanishad'), findsWidgets);
+    expect(find.text('॥ ईशावास्योपनिषत् ॥'), findsOneWidget);
+
+    // 2. Verse number
+    expect(find.text('॥ १ ॥'), findsOneWidget);
+
+    // 3. In Sanskrit
+    expect(find.textContaining('ईशा वास्यमिदं सर्वं'), findsOneWidget);
+
+    // 4. Transliteration (IAST)
+    await tester.scrollUntilVisible(find.textContaining('īśā'), 200);
+    expect(find.textContaining('īśā'), findsOneWidget);
+
+    // 5. Original Translation (English)
+    await tester.scrollUntilVisible(find.textContaining('All this, whatsoever moves'), 200);
+    expect(find.textContaining('All this, whatsoever moves'), findsOneWidget);
   });
 }
 

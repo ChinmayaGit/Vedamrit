@@ -94,8 +94,91 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(phrase(state, 'dark')),
             subtitle: Text(phrase(state, 'darkHelp')),
             value: state.darkMode,
-            activeThumbColor: kSaffron,
+            activeThumbColor: paletteById(state.themePaletteId).primary,
             onChanged: state.setDarkMode,
+          ),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('AMOLED Dark (#000000)'),
+            subtitle: const Text('Pure pitch black background for OLED screens & battery saving'),
+            value: state.amoledDark,
+            activeThumbColor: paletteById(state.themePaletteId).primary,
+            onChanged: (val) {
+              state.setAmoledDark(val);
+              if (val && !state.darkMode) {
+                state.setDarkMode(true);
+              }
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Theme Color Palette',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Sacred accent color across the app (${paletteById(state.themePaletteId).name} · ${paletteById(state.themePaletteId).sanskrit})',
+                  style: const TextStyle(fontSize: 13, color: kMuted),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 74,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: themePalettes.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 14),
+                    itemBuilder: (context, index) {
+                      final item = themePalettes[index];
+                      final selected = item.id == state.themePaletteId;
+                      return GestureDetector(
+                        onTap: () => state.setThemePalette(item.id),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                color: item.primary,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: selected ? Colors.white : Colors.transparent,
+                                  width: 2.5,
+                                ),
+                                boxShadow: [
+                                  if (selected)
+                                    BoxShadow(
+                                      color: item.primary.withValues(alpha: 0.6),
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                    ),
+                                ],
+                              ),
+                              child: selected
+                                  ? const Icon(Icons.check, color: Colors.white, size: 24)
+                                  : null,
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              item.name,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+                                color: selected ? item.primary : kMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,

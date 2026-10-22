@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_state.dart';
-import '../catalog.dart';
 import '../phrases.dart';
 import '../gita_api.dart';
 import '../models.dart';
+import '../sanskrit_documents_data.dart';
 import '../scripture_catalog.dart';
 import '../theme.dart';
 import '../widgets.dart';
 import 'gita_book_screen.dart';
+import 'scripture_verse_book_screen.dart';
 import 'settings_screen.dart';
 import 'library_screen.dart';
 import 'passage_screen.dart';
@@ -42,6 +43,17 @@ void resumeSpot(BuildContext context, ReadingSpot? spot) {
       ),
     );
     return;
+  }
+  if (spot.kind == 'verse_book' && spot.bookId != null) {
+    final book = SanskritDocumentsData.findBook(spot.bookId!);
+    if (book != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ScriptureVerseBookScreen(book: book),
+        ),
+      );
+      return;
+    }
   }
   if (spot.kind == 'chapter') {
     Navigator.of(context).push(
@@ -102,11 +114,15 @@ class ScriptureCatalogGrid extends StatelessWidget {
   static const _sectionMeta = <String, ({String sanskrit, String desc, IconData icon})>{
     'vedas': (sanskrit: 'वेदाः', desc: 'Rig, Sama, Yajur, Atharva', icon: Icons.auto_stories),
     'gita': (sanskrit: 'श्रीमद्भगवद्गीता', desc: '18 Chapters · 700 Shlokas', icon: Icons.menu_book),
-    'upanishads': (sanskrit: 'उपनिषदः', desc: '108 Upanishads & Vedanta', icon: Icons.self_improvement),
+    'upanishads': (sanskrit: 'उपनिषदः', desc: 'Isha, Kena, Katha, Mandukya...', icon: Icons.self_improvement),
     'puranas': (sanskrit: 'पुराणानि', desc: 'Bhagavatam, Vishnu, Shiva...', icon: Icons.temple_hindu),
     'epics': (sanskrit: 'इतिहासः', desc: 'Mahabharata & Ramayana', icon: Icons.shield_outlined),
-    'shastras': (sanskrit: 'शास्त्राणि', desc: 'Sutras & Treatises', icon: Icons.school_outlined),
+    'shastras': (sanskrit: 'शास्त्राणि', desc: 'Artha, Dharma & Treatises', icon: Icons.school_outlined),
     'yoga': (sanskrit: 'योगदर्शनम्', desc: 'Patanjali Sutras & Hatha Yoga', icon: Icons.spa_outlined),
+    'vedanta': (sanskrit: 'वेदान्तः', desc: 'Brahma Sutras & Vivekachudamani', icon: Icons.psychology_outlined),
+    'prasthanatrayi': (sanskrit: 'प्रस्थानत्रयी', desc: 'Upanishads, Gita, Brahma Sutra', icon: Icons.account_balance_outlined),
+    'tantra': (sanskrit: 'तन्त्रम्', desc: 'Shiva Sutras & Agamas', icon: Icons.flare_outlined),
+    'smriti': (sanskrit: 'स्मृतिः', desc: 'Manusmriti & Sacred Law', icon: Icons.gavel_outlined),
   };
 
   @override
@@ -337,6 +353,18 @@ class _Shelf extends StatelessWidget {
 
 void openWork(BuildContext context, SacredWork work) {
   switch (work.kind) {
+    case 'verse_book':
+      if (work.verseBookId != null) {
+        final book = SanskritDocumentsData.findBook(work.verseBookId!);
+        if (book != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ScriptureVerseBookScreen(book: book),
+            ),
+          );
+          return;
+        }
+      }
     case 'song':
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SongCelestialScreen()));
     case 'forty':
@@ -344,9 +372,15 @@ void openWork(BuildContext context, SacredWork work) {
     case 'chapters':
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const GitaChapterBookScreen(chapter: 1)));
     case 'cantos':
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const _CantoScreen()));
+      final book = SanskritDocumentsData.findBook('purana-bhagavatam');
+      if (book != null) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => ScriptureVerseBookScreen(book: book)));
+      }
     case 'vedas':
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const _VedaShelfScreen()));
+      final book = SanskritDocumentsData.findBook('veda-sacred-mantras');
+      if (book != null) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => ScriptureVerseBookScreen(book: book)));
+      }
     case 'asset':
       if (work.assetPath != null) {
         Navigator.of(context).push(
@@ -403,78 +437,6 @@ Future<void> _openGutenberg(BuildContext context, SacredWork work) async {
   } on GitaException catch (err) {
     if (!context.mounted) return;
     showNotice(context, err.message);
-  }
-}
-
-class _CantoScreen extends StatelessWidget {
-  const _CantoScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Srimad Bhagavatam'), actions: const [PageTools()]),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-        children: [
-          const Text(
-            'Twelve skandhas. These notes are a guide. Full public-domain editions, when a library has them, are on the download button.',
-            style: TextStyle(color: kMuted, height: 1.4),
-          ),
-          const SizedBox(height: 14),
-          for (final canto in cantos) ...[
-            _ScriptTile(
-              colors: coverGradients[(canto.number - 1) % coverGradients.length],
-              kicker: canto.number.toString().padLeft(2, '0'),
-              title: canto.name,
-              subtitle: canto.sanskrit,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => PassageScreen(
-                      passage: Passage(
-                        id: 'canto-${canto.number}',
-                        title: 'Skandha ${canto.number} · ${canto.name}',
-                        sanskrit: canto.sanskrit,
-                        transliteration: '',
-                        meaning: canto.summary,
-                      ),
-                      libraryQuery: canto.query,
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 12),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _VedaShelfScreen extends StatelessWidget {
-  const _VedaShelfScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mantras'), actions: const [PageTools()]),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-        children: [
-          for (var i = 0; i < vedas.length; i++) ...[
-            _ScriptTile(
-              colors: coverGradients[(i + 2) % coverGradients.length],
-              kicker: 'Veda',
-              title: vedas[i].name,
-              subtitle: vedas[i].sanskrit,
-              onTap: () => openVeda(context, vedas[i]),
-            ),
-            const SizedBox(height: 12),
-          ],
-        ],
-      ),
-    );
   }
 }
 
@@ -646,11 +608,11 @@ class VedaScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(veda.summary, style: const TextStyle(fontSize: 16, height: 1.45)),
           const SizedBox(height: 16),
-          PillButton(
-            label: 'Find free editions',
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => LibraryScreen(initialQuery: veda.query)));
-            },
+          const Center(
+            child: Text(
+              'Sanskrit Documents Archive (sanskritdocuments.org)',
+              style: TextStyle(color: kMuted, fontSize: 12),
+            ),
           ),
           const SizedBox(height: 18),
           const SectionLabel('Shlokas'),

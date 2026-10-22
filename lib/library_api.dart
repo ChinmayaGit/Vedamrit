@@ -181,7 +181,7 @@ class LibraryApi {
       if (kind == null) continue;
       ranked.putIfAbsent(kind, () => name);
     }
-    const order = ['txt', 'html', 'epub', 'pdf'];
+    const order = ['pdf', 'epub', 'txt', 'html'];
     for (final kind in order) {
       final name = ranked[kind];
       if (name == null) continue;

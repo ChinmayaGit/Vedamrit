@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+import 'catalog.dart';
 import 'models.dart';
 
 class ReaderAudio extends ChangeNotifier {
@@ -110,8 +111,14 @@ class ReaderAudio extends ChangeNotifier {
       return;
     }
     final piece = _pieces[_index];
+    var locale = piece.locale.replaceAll('_', '-').trim();
+    if (locale.startsWith('sa')) {
+      locale = 'hi-IN';
+    } else if (!locale.contains('-')) {
+      locale = ttsLocale(locale);
+    }
     try {
-      await engine.setLanguage(piece.locale);
+      await engine.setLanguage(locale);
     } catch (_) {}
     final spoken = _withoutNumbers(piece.text);
     if (spoken.isEmpty) {

@@ -345,27 +345,25 @@ class _GitaChapterBookScreenState extends State<GitaChapterBookScreen> {
                 ),
                 const SizedBox(height: 22),
               ],
-              if (state.language == 'en') ...[
-                const Divider(color: kSaffron, thickness: 1, indent: 80, endIndent: 80),
-                const SizedBox(height: 18),
-                Text(
-                  phrase(state, 'language'),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: kSaffron, fontWeight: FontWeight.w800, letterSpacing: 1.2),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'The Song Celestial · Sir Edwin Arnold, 1885',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: kMuted, fontSize: 13),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  english.isEmpty ? phrase(state, 'opening') : english,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, height: 1.7, color: inkOf(context)),
-                ),
-              ],
+              const Divider(color: kSaffron, thickness: 1, indent: 80, endIndent: 80),
+              const SizedBox(height: 18),
+              Text(
+                'Original Translation (The Song Celestial)',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: kSaffron, fontWeight: FontWeight.w800, letterSpacing: 1.2),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'The Song Celestial · Sir Edwin Arnold, 1885',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: kMuted, fontSize: 13),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                english.isEmpty ? phrase(state, 'opening') : english,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, height: 1.7, color: inkOf(context)),
+              ),
             ],
           ),
           if (showControls)

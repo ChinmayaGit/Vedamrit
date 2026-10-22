@@ -29,6 +29,8 @@ class AppState extends ChangeNotifier {
   double speed = 1;
   double textScale = 1;
   bool darkMode = false;
+  bool amoledDark = false;
+  String themePaletteId = 'saffron';
   bool showTransliteration = true;
   bool languageChosen = false;
   bool tapToToggleUi = true;
@@ -69,6 +71,8 @@ class AppState extends ChangeNotifier {
     speed = _storedSpeed(store.getString('speed'));
     textScale = _storedZoom(store.getString('zoom'));
     darkMode = store.getString('dark') == '1';
+    amoledDark = store.getString('amoledDark') == '1';
+    themePaletteId = store.getString('themePalette') ?? 'saffron';
     showTransliteration = store.getString('transliteration') != '0';
     tapToToggleUi = store.getString('tapToToggleUi') != '0';
     autoResumeRecent = store.getString('autoResumeRecent') == '1';
@@ -278,13 +282,11 @@ class AppState extends ChangeNotifier {
   void setReadingLanguage(String code) {
     readingLanguage = code;
     language = code;
-    audioLanguage = '';
     languageChosen = true;
     store.setString('readingLanguage', code);
     store.setString('language', code);
-    store.setString('audioLanguage', '');
     store.setString('languageChosen', '1');
-    _pushUser({'readingLanguage': code, 'language': code, 'audioLanguage': ''});
+    _pushUser({'readingLanguage': code, 'language': code});
     notifyListeners();
   }
 
@@ -314,6 +316,18 @@ class AppState extends ChangeNotifier {
   void setDarkMode(bool value) {
     darkMode = value;
     store.setString('dark', value ? '1' : '0');
+    notifyListeners();
+  }
+
+  void setAmoledDark(bool value) {
+    amoledDark = value;
+    store.setString('amoledDark', value ? '1' : '0');
+    notifyListeners();
+  }
+
+  void setThemePalette(String id) {
+    themePaletteId = id;
+    store.setString('themePalette', id);
     notifyListeners();
   }
 

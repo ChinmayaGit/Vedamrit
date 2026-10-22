@@ -6,7 +6,6 @@ import '../models.dart';
 import '../reader_audio.dart';
 import '../theme.dart';
 import '../widgets.dart';
-import 'library_screen.dart';
 import 'settings_screen.dart';
 
 class PassageScreen extends StatefulWidget {
@@ -84,17 +83,13 @@ class _PassageScreenState extends State<PassageScreen> {
               ],
               const SizedBox(height: 16),
               Text(passage.meaning, style: const TextStyle(fontSize: 17, height: 1.5)),
-              if (widget.libraryQuery != null) ...[
-                const SizedBox(height: 20),
-                PillButton(
-                  label: 'Find free editions',
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => LibraryScreen(initialQuery: widget.libraryQuery)),
-                    );
-                  },
+              const SizedBox(height: 24),
+              const Center(
+                child: Text(
+                  'Sanskrit Documents Archive (sanskritdocuments.org)',
+                  style: TextStyle(color: kMuted, fontSize: 12),
                 ),
-              ],
+              ),
             ],
           ),
             if (showControls)

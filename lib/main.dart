@@ -30,11 +30,16 @@ class VedamritApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AppState>();
+    final palette = paletteById(state.themePaletteId);
     return MaterialApp(
       title: 'Vedamrit',
       debugShowCheckedModeBanner: false,
-      theme: buildTheme(),
-      darkTheme: buildTheme(dark: true),
+      theme: buildTheme(primary: palette.primary),
+      darkTheme: buildTheme(
+        dark: true,
+        amoled: state.amoledDark,
+        primary: palette.primary,
+      ),
       themeMode: state.darkMode ? ThemeMode.dark : ThemeMode.light,
       builder: (context, child) {
         return MediaQuery(

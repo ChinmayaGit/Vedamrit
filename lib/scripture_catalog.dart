@@ -7,6 +7,7 @@ class SacredWork {
   final String? assetPath;
   final String? gutenberg;
   final String? query;
+  final String? verseBookId;
 
   const SacredWork({
     required this.id,
@@ -17,6 +18,7 @@ class SacredWork {
     this.assetPath,
     this.gutenberg,
     this.query,
+    this.verseBookId,
   });
 }
 
@@ -28,6 +30,10 @@ const scriptureSections = <(String, String, String)>[
   ('epics', 'Epics', 'The great epics'),
   ('shastras', 'Shastras', 'Sutras and shastras'),
   ('yoga', 'Yoga', 'Yoga philosophy'),
+  ('vedanta', 'Vedanta', 'Brahma Sutras and Advaita'),
+  ('prasthanatrayi', 'Prasthanatrayi', 'The Three Foundations'),
+  ('tantra', 'Tantra', 'Agamas and Tantras'),
+  ('smriti', 'Smriti', 'Dharma and Smritis'),
 ];
 
 const fortyVerses = <(int, int)>[
@@ -74,92 +80,81 @@ const fortyVerses = <(int, int)>[
 ];
 
 const scriptureWorks = <SacredWork>[
-  // Vedas
+  // --------------------------------------------------------------------------
+  // 1. 4 VEDAS (https://sanskritdocuments.org/sanskrit/veda)
+  // --------------------------------------------------------------------------
   SacredWork(
-    id: 'rig-griffith',
+    id: 'rig-agni-suktam',
     section: 'vedas',
-    title: 'The Rig Veda',
-    credit: 'Complete translation by Ralph T.H. Griffith, 1896. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/rig_veda.txt',
+    title: 'Rig Veda: Agni Suktam (1.1)',
+    credit: 'Complete 9 mantras with Sanskrit in Devanagari, IAST transliteration, selected language & English translation.',
+    kind: 'verse_book',
+    verseBookId: 'rig-agni-suktam',
   ),
   SacredWork(
-    id: 'sama',
+    id: 'rig-purusha-suktam',
     section: 'vedas',
-    title: 'The Sama Veda',
-    credit: 'The Veda of melodies, Ralph T.H. Griffith. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/sama_veda.txt',
+    title: 'Rig Veda: Purusha Suktam (10.90)',
+    credit: 'The Cosmic Hymn of Creation with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'rig-purusha-suktam',
   ),
   SacredWork(
-    id: 'white-yajur',
+    id: 'sama-veda-gana',
     section: 'vedas',
-    title: 'The White Yajur Veda',
-    credit: 'Ralph T.H. Griffith, books 1–40. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/white_yajur_veda.txt',
+    title: 'Sama Veda: Chhanda Archika',
+    credit: 'Agneya Parva & sacred melodies with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'sama-veda-gana',
   ),
   SacredWork(
-    id: 'white-yajur-index',
+    id: 'yajur-shukla-isha',
     section: 'vedas',
-    title: 'The White Yajur Veda — index',
-    credit: 'Complete book index and hymns by Griffith. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/white_yajur_veda.txt',
+    title: 'Shukla Yajur Veda: Vajasaneyi Samhita',
+    credit: 'Chapter 40 (Ishavasya) with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'yajur-shukla-isha',
   ),
   SacredWork(
-    id: 'black-yajur',
+    id: 'yajur-krishna-taittiriya',
     section: 'vedas',
-    title: 'The Black Yajur Veda',
-    credit: 'Taittiriya Sanhita, Arthur Berriedale Keith, 1914. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/black_yajur_veda.txt',
+    title: 'Krishna Yajur Veda: Sri Rudram',
+    credit: 'Taittiriya Samhita 4.5 (Namakam) with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'yajur-krishna-taittiriya',
   ),
   SacredWork(
-    id: 'atharva-griffith',
+    id: 'atharva-veda-prithvi',
     section: 'vedas',
-    title: 'The Hymns of the Atharvaveda',
-    credit: 'Ralph T.H. Griffith, 1895–96. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/atharva_veda.txt',
+    title: 'Atharva Veda: Bhumi Suktam (12.1)',
+    credit: 'Hymn to Mother Earth with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'atharva-veda-prithvi',
   ),
   SacredWork(
-    id: 'atharva-bloomfield',
+    id: 'veda-sacred-mantras',
     section: 'vedas',
-    title: 'The Atharva Veda (Bloomfield)',
-    credit: 'Maurice Bloomfield, Sacred Books of the East, vol 42, 1897. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/atharva_veda_bloomfield.txt',
-  ),
-  SacredWork(
-    id: 'vedic-reader',
-    section: 'vedas',
-    title: 'A Vedic Reader for Students',
-    credit: 'Arthur Anthony Macdonell, 1917. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/vedic_reader.txt',
-  ),
-  SacredWork(
-    id: 'veda-mantras',
-    section: 'vedas',
-    title: 'Mantras kept in the app',
-    credit: 'Gayatri, Purusha Sukta, Mahamrityunjaya, and Vedic shlokas with gloss.',
-    kind: 'vedas',
+    title: 'Foundational Vedic Mantras',
+    credit: 'Gayatri, Mahamrityunjaya, Pavamana & Shanti Mantras with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'veda-sacred-mantras',
   ),
 
-  // Gita
+  // --------------------------------------------------------------------------
+  // GITA
+  // --------------------------------------------------------------------------
   SacredWork(
     id: 'gita-verses',
     section: 'gita',
     title: 'The Bhagavad Gita',
-    credit: 'All 18 chapters. Sanskrit is kept in the app. English sits beside each shloka.',
+    credit: 'All 18 chapters · 700 Shlokas. Sanskrit in Devanagari, IAST, selected language & English translation.',
     kind: 'chapters',
   ),
   SacredWork(
     id: 'song-celestial',
     section: 'gita',
     title: 'The Song Celestial',
-    credit: 'Verse translation by Sir Edwin Arnold, 1885. The full English text is in the app.',
+    credit: 'Verse translation by Sir Edwin Arnold, 1885. Full English poetic rendering.',
     kind: 'song',
   ),
   SacredWork(
@@ -176,174 +171,275 @@ const scriptureWorks = <SacredWork>[
     credit: 'Each shloka in Sanskrit, with the English reading beside it.',
     kind: 'chapters',
   ),
-  SacredWork(
-    id: 'gita-abbreviated',
-    section: 'gita',
-    title: 'Abbreviated Gita',
-    credit: 'Forty selected shlokas with Sanskrit and transliteration.',
-    kind: 'forty',
-  ),
 
-  // Upanishads
+  // --------------------------------------------------------------------------
+  // 2. UPANISHADS (https://sanskritdocuments.org/upanishhat)
+  // --------------------------------------------------------------------------
   SacredWork(
-    id: 'upanishads-muller',
+    id: 'upanishad-isha',
     section: 'upanishads',
-    title: 'The Upanishads',
-    credit: 'Max Müller, Sacred Books of the East, volumes 1 and 2, 1879–1884. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/upanishads.txt',
+    title: 'Isha Upanishad (ईशावास्योपनिषत्)',
+    credit: 'Complete 18 verses. Sanskrit in Devanagari, IAST transliteration, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'upanishad-isha',
   ),
   SacredWork(
-    id: 'upanishads-minor',
+    id: 'upanishad-mandukya',
     section: 'upanishads',
-    title: '30 Minor Upanishads',
-    credit: 'English translations with introductions by K. Narayanasvami Aiyar, 1914. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/minor_upanishads.txt',
+    title: 'Mandukya Upanishad (माण्डूक्योपनिषत्)',
+    credit: 'All 12 mantras on OM and the 4 states of consciousness (Turiya). Sanskrit, IAST & translation.',
+    kind: 'verse_book',
+    verseBookId: 'upanishad-mandukya',
+  ),
+  SacredWork(
+    id: 'upanishad-katha',
+    section: 'upanishads',
+    title: 'Katha Upanishad (कठोपनिषत्)',
+    credit: 'Dialogue of Nachiketa and Yama on Immortality. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'upanishad-katha',
+  ),
+  SacredWork(
+    id: 'upanishad-kena',
+    section: 'upanishads',
+    title: 'Kena Upanishad (केनोपनिषत्)',
+    credit: 'The Nature of Brahman & Consciousness. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'upanishad-kena',
+  ),
+  SacredWork(
+    id: 'upanishad-taittiriya',
+    section: 'upanishads',
+    title: 'Taittiriya Upanishad (तैत्तिरीयोपनिषत्)',
+    credit: 'Shikshavalli & Brahmanandavalli. Truth, Consciousness & Bliss.',
+    kind: 'verse_book',
+    verseBookId: 'upanishad-taittiriya',
   ),
 
-  // Puranas
+  // --------------------------------------------------------------------------
+  // 3. PURANAS (https://sanskritdocuments.org/doc_purana)
+  // --------------------------------------------------------------------------
   SacredWork(
-    id: 'bhagavatam',
+    id: 'purana-bhagavatam',
     section: 'puranas',
-    title: 'Srimad Bhagavatam',
-    credit: 'Twelve skandhas (Maha Purana), Sanskrit titles and summaries kept in the app.',
-    kind: 'cantos',
+    title: 'Srimad Bhagavatam (श्रीमद्भागवतम्)',
+    credit: 'Foundational shlokas across the 12 Skandhas with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'purana-bhagavatam',
   ),
   SacredWork(
-    id: 'vishnu-purana',
+    id: 'purana-vishnu',
     section: 'puranas',
-    title: 'The Vishnu Purana',
-    credit: 'Classic translation by H.H. Wilson, 1840. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/vishnu_purana.txt',
+    title: 'Vishnu Purana (विष्णुपुराणम्)',
+    credit: 'Creation and Vishnu Tattva with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'purana-vishnu',
   ),
   SacredWork(
-    id: 'shiva-purana',
+    id: 'purana-shiva',
     section: 'puranas',
-    title: 'The Shiva Purana',
-    credit: 'Creation, Shiva-lila, and dharma. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/shiva_purana.txt',
+    title: 'Shiva Purana (शिवपुराणम्)',
+    credit: 'Vidyeshvara Samhita & Shiva Tattva with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'purana-shiva',
   ),
   SacredWork(
-    id: 'garuda-purana',
+    id: 'purana-garuda',
     section: 'puranas',
-    title: 'The Garuda Purana',
-    credit: 'Saroddhara, translated by Ernest Wood & S.V. Subrahmanyam. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/garuda_purana.txt',
+    title: 'Garuda Purana (गरुडपुराणम्)',
+    credit: 'Saroddhara on Karma, Soul and Dharma with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'purana-garuda',
   ),
   SacredWork(
-    id: 'markandeya-purana',
+    id: 'purana-devi-mahatmya',
     section: 'puranas',
-    title: 'The Markandeya Purana',
-    credit: 'Ancient wisdom and Devi Mahatmya, tr. F. Eden Pargiter. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/markandeya_purana.txt',
+    title: 'Devi Mahatmya: Durga Saptashati',
+    credit: 'Markandeya Purana Narayani Stuti with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'purana-devi-mahatmya',
   ),
 
-  // Epics
+  // --------------------------------------------------------------------------
+  // 4. ITIHASA (https://sanskritdocuments.org/itihasa)
+  // --------------------------------------------------------------------------
   SacredWork(
-    id: 'ramayana-dutt',
+    id: 'itihasa-ramayana-mula',
     section: 'epics',
-    title: 'The Ramayana',
-    credit: 'Abridged verse translation by Romesh Dutt, 1899. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/ramayana.txt',
+    title: 'Valmiki Ramayana: Mula Ramayana',
+    credit: 'Bala Kanda Sarga 1. Sanskrit in Devanagari, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'itihasa-ramayana-mula',
   ),
   SacredWork(
-    id: 'mahabharata-dutt',
+    id: 'itihasa-aditya-hridayam',
     section: 'epics',
-    title: 'The Mahabharata',
-    credit: 'Abridged verse translation by Romesh Dutt, 1898. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/mahabharata.txt',
+    title: 'Valmiki Ramayana: Aditya Hridayam',
+    credit: 'Yuddha Kanda Sarga 105. Sage Agastya\'s Hymn of Victory to the Sun God.',
+    kind: 'verse_book',
+    verseBookId: 'itihasa-aditya-hridayam',
   ),
   SacredWork(
-    id: 'indian-idylls',
+    id: 'itihasa-yaksha-prashna',
     section: 'epics',
-    title: 'Indian Idylls',
-    credit: 'Stories from the Mahabharata, Sir Edwin Arnold, 1883. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/indian_idylls.txt',
+    title: 'Mahabharata: Yaksha Prashna',
+    credit: 'Vana Parva Dharma dialogue of Yudhishthira. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'itihasa-yaksha-prashna',
+  ),
+  SacredWork(
+    id: 'itihasa-vidura-niti',
+    section: 'epics',
+    title: 'Mahabharata: Vidura Niti',
+    credit: 'Udyoga Parva precepts on Wisdom, Virtue, and Conduct.',
+    kind: 'verse_book',
+    verseBookId: 'itihasa-vidura-niti',
+  ),
+  SacredWork(
+    id: 'itihasa-bhishma-stuti',
+    section: 'epics',
+    title: 'Mahabharata: Bhishma Stuti',
+    credit: 'Shanti Parva final hymn of Bhishma to Sri Krishna.',
+    kind: 'verse_book',
+    verseBookId: 'itihasa-bhishma-stuti',
   ),
 
-  // Shastras
+  // --------------------------------------------------------------------------
+  // 5. SHASTRAS (https://sanskritdocuments.org/shastra)
+  // --------------------------------------------------------------------------
   SacredWork(
-    id: 'dharma',
+    id: 'shastra-arthashastra',
     section: 'shastras',
-    title: 'The Dharma Shastras',
-    credit: 'Apastamba, Gautama, Vasishtha, Baudhayana. SBE Vol 2, Bühler. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/dharma_sutras.txt',
+    title: 'Kautilya Artha Shastra',
+    credit: 'Statecraft and governance sutras. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'shastra-arthashastra',
   ),
   SacredWork(
-    id: 'manu',
+    id: 'shastra-apastamba',
     section: 'shastras',
-    title: 'The Laws of Manu',
-    credit: 'Georg Bühler, Sacred Books of the East, 1886. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/laws_of_manu.txt',
+    title: 'Apastamba Dharma Sutra',
+    credit: 'Sacred conduct, restraint, and duties. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'shastra-apastamba',
   ),
   SacredWork(
-    id: 'grihya',
+    id: 'shastra-nyaya-sutras',
     section: 'shastras',
-    title: 'The Grihya Sutras',
-    credit: 'Vedic domestic ritual, Hermann Oldenberg, 1886. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/grihya_sutras.txt',
-  ),
-  SacredWork(
-    id: 'kapila',
-    section: 'shastras',
-    title: 'The Kapila Sutras',
-    credit: 'Sankhya aphorisms, James R. Ballantyne, 1885. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/sankhya.txt',
-  ),
-  SacredWork(
-    id: 'artha',
-    section: 'shastras',
-    title: 'The Artha Shastra of Kautilya',
-    credit: 'Statecraft and governance, translated by R. Shamasastry, 1915. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/arthashastra.txt',
-  ),
-  SacredWork(
-    id: 'vimanika',
-    section: 'shastras',
-    title: 'The Vimanika Shastra',
-    credit: 'Maharshi Bharadwaja’s aeronautics, tr. G.R. Josyer. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/vimanika_shastra.txt',
+    title: 'Gautama Nyaya Sutras',
+    credit: 'The instruments of valid knowledge & liberation. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'shastra-nyaya-sutras',
   ),
 
-  // Yoga
+  // --------------------------------------------------------------------------
+  // 6. YOGA (https://sanskritdocuments.org/yoga)
+  // --------------------------------------------------------------------------
   SacredWork(
-    id: 'yoga-classical',
+    id: 'yoga-patanjali-samadhi',
     section: 'yoga',
-    title: 'The Yoga Sutras of Patanjali',
-    credit: 'Classical translation with commentary by Charles Johnston. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/yoga_sutras.txt',
+    title: 'Patanjali Yoga Sutras: Samadhi Pada',
+    credit: 'Foundational Yoga sutras 1.1–1.12 with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'yoga-patanjali-samadhi',
   ),
   SacredWork(
-    id: 'yoga-sarbatoare',
+    id: 'yoga-patanjali-sadhana',
     section: 'yoga',
-    title: 'The Yoga Aphorisms of Patanjali',
-    credit: 'Patanjali’s Yoga Sutras with interpretation and notes. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/yoga_sutras.txt',
+    title: 'Patanjali Yoga Sutras: Sadhana Pada',
+    credit: 'Kriya Yoga, Kleshas, and the Eight Limbs of Ashtanga Yoga.',
+    kind: 'verse_book',
+    verseBookId: 'yoga-patanjali-sadhana',
   ),
   SacredWork(
-    id: 'yoga-systems',
+    id: 'yoga-hatha-pradipika',
     section: 'yoga',
-    title: 'The Great Systems of Yoga',
-    credit: 'A survey of the yoga tradition, Ernest Wood, 1954. Kept on this phone.',
-    kind: 'asset',
-    assetPath: 'assets/scripture/great_systems_of_yoga.txt',
+    title: 'Hatha Yoga Pradipika',
+    credit: 'Sage Svatmarama on Asana, Pranayama, and Raja Yoga.',
+    kind: 'verse_book',
+    verseBookId: 'yoga-hatha-pradipika',
+  ),
+
+  // --------------------------------------------------------------------------
+  // 7. VEDANTA (https://sanskritdocuments.org/vedanta)
+  // --------------------------------------------------------------------------
+  SacredWork(
+    id: 'vedanta-brahma-sutras',
+    section: 'vedanta',
+    title: 'Brahma Sutras: Chatus-Sutri',
+    credit: 'The 4 fundamental pillars with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'vedanta-brahma-sutras',
+  ),
+  SacredWork(
+    id: 'vedanta-vivekachudamani',
+    section: 'vedanta',
+    title: 'Vivekachudamani (विवेकचूडामणिः)',
+    credit: 'Adi Shankaracharya\'s foundational verses with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'vedanta-vivekachudamani',
+  ),
+  SacredWork(
+    id: 'vedanta-upadesha-sahasri',
+    section: 'vedanta',
+    title: 'Upadesha Sahasri (उपदेशसाहस्री)',
+    credit: 'Adi Shankaracharya\'s direct teachings on the Non-Dual Self.',
+    kind: 'verse_book',
+    verseBookId: 'vedanta-upadesha-sahasri',
+  ),
+
+  // --------------------------------------------------------------------------
+  // 8. PRASTHANATRAYI (https://sanskritdocuments.org/prasthanatrayi)
+  // --------------------------------------------------------------------------
+  SacredWork(
+    id: 'prasthanatrayi-trio',
+    section: 'prasthanatrayi',
+    title: 'Prasthanatrayi (प्रस्थानत्रयी)',
+    credit: 'The Three Foundations: Shruti (Upanishads), Smriti (Gita), Nyaya (Brahma Sutras).',
+    kind: 'verse_book',
+    verseBookId: 'prasthanatrayi-trio',
+  ),
+
+  // --------------------------------------------------------------------------
+  // 9. TANTRA (https://sanskritdocuments.org/tantra)
+  // --------------------------------------------------------------------------
+  SacredWork(
+    id: 'tantra-shiva-sutras',
+    section: 'tantra',
+    title: 'Shiva Sutras (शिवसूत्राणि)',
+    credit: 'Sage Vasugupta on Universal Consciousness. Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'tantra-shiva-sutras',
+  ),
+  SacredWork(
+    id: 'tantra-vijnana-bhairava',
+    section: 'tantra',
+    title: 'Vijnana Bhairava Tantra',
+    credit: '112 Dharanas of Spontaneous Realization in Kashmir Shaivism.',
+    kind: 'verse_book',
+    verseBookId: 'tantra-vijnana-bhairava',
+  ),
+
+  // --------------------------------------------------------------------------
+  // 10. SMRITI (https://sanskritdocuments.org/smriti)
+  // --------------------------------------------------------------------------
+  SacredWork(
+    id: 'smriti-manusmriti',
+    section: 'smriti',
+    title: 'Manusmriti: Laws of Manu',
+    credit: 'Foundational Dharma verses with Sanskrit, IAST, selected language & English.',
+    kind: 'verse_book',
+    verseBookId: 'smriti-manusmriti',
+  ),
+  SacredWork(
+    id: 'smriti-yajnavalkya',
+    section: 'smriti',
+    title: 'Yajnavalkya Smriti (याज्ञवल्क्यस्मृतिः)',
+    credit: 'Golden principles of virtue, conduct, and liberation.',
+    kind: 'verse_book',
+    verseBookId: 'smriti-yajnavalkya',
   ),
 ];
 
-List<SacredWork> worksIn(String section) => scriptureWorks.where((work) => work.section == section).toList();
+List<SacredWork> worksIn(String section) =>
+    scriptureWorks.where((work) => work.section == section).toList();

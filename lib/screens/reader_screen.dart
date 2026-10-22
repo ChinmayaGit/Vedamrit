@@ -298,6 +298,46 @@ class _ReaderScreenState extends State<ReaderScreen> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: kMuted, height: 1.4),
                     ),
+                  if (current != null && language.code != 'en' && current.englishSource != null) ...[
+                    const SizedBox(height: 14),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: cardOf(context),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.black.withValues(alpha: 0.05)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                            'Original Translation (English)',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: kSaffron, fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            current.englishSource!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              height: 1.55,
+                              color: ink.withValues(alpha: 0.85),
+                            ),
+                          ),
+                          if (current.englishAuthor != null) ...[
+                            const SizedBox(height: 6),
+                            Text(
+                              current.englishAuthor!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: kMuted, fontSize: 12, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
                   if (error != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),

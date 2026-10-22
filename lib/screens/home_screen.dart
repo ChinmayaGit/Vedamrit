@@ -44,19 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final day = state.chapters[DateTime.now().difference(DateTime(DateTime.now().year)).inDays % state.chapters.length];
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'homeRecentFab',
-        backgroundColor: kSaffron,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.auto_stories),
-        label: Text(
-          state.spot != null ? 'Resume: ${state.spot!.title}' : 'Resume Reading',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        tooltip: 'Resume reading where you left off',
-        onPressed: () => resumeSpot(context, state.spot),
-      ),
       body: SafeArea(
         bottom: false,
         child: Column(
